@@ -48,7 +48,7 @@
 param($Outputfile = 'Cleanup.log') 
 
 # Test if the script is "RunasAdminsitrator"
-).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+$asAdmin = ([Security.Principal.WindowsPrincipal] 	[Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
 # Creates a unique name for the log file
 function New-TimeStampFileName {
