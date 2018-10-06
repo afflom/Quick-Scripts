@@ -1,4 +1,8 @@
-﻿<#
+﻿#Requires -Version 3.0 
+#  R e q uires -Modules ActiveDirectory, DnsClient
+#Requires -RunAsAdministrator
+
+<#
     .SYNOPSIS
     Copy backup files from source to destination and capture metadata for historical information and future planning
     .DESCRIPTION
@@ -57,7 +61,10 @@ function New-TimedStampFileName {
 function Get-DriveInformation
 {
   #Content
-  
+  get-wmiobject -Class Win32_Share | Sort-Object -Property Name | Select-Object -Property Name, Path, Status
+
+  get-wmiobject -Class Win32_MappedLogicalDisk | Select-Object -Property Name, Description, FileSystem, @{Label='Size';Expression={"{0,12:n0} MB" -f ($_.Size/1mb)}}, @{Label="Free Space";Expression={"{0,12:n0} MB" -f ($_.FreeSpace/1mb)}}, ProviderName
+   
 
 }
 
@@ -84,7 +91,7 @@ function Set-InputFileData
 
 
 Export-NpsConfiguration -Path "<Path>\$($env:COMPUTERNAME)-NPS-$(Get-Date -Uformat %Y%m%d).xml"
-Copy-Item "<Same Path\$($env:COMPUTERNAME)-NPS-$(Get-Date -Uformat %Y%m%d).xml" -Destination '<UNC Path>'
+Copy-Item -Path "<Same Path\$($env:COMPUTERNAME)-NPS-$(Get-Date -Uformat %Y%m%d).xml" -Destination '<UNC Path>'
 exit
 
 
