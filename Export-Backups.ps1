@@ -14,10 +14,30 @@
     https://github.com/afflom/quick-scripts
 #>
 
+   param
+  (
+    [Parameter(HelpMessage='Prefix of file or log name')]
+    [alias('Daysback')]
+    $daysback = -14,
+
+    [Parameter(HelpMessage='Extention of file.  txt, csv, log')]
+    [alias('Extension')]
+    $tailNAME,
+    [Parameter(HelpMessage='Formatting Choice 1 to 4')]
+    [alias('Choice')]
+    [ValidateRange(1,4)]
+    $StampFormat,
+    [Parameter(Position = 0)] $SourceFolder = "$env:HOMEDRIVE\temp\BackupSource",
+    [Parameter(Position = 1)] $DestinationFolder = "$env:HOMEDRIVE\temp\BackupDestination"
+  )
+
 #Get Backup Directories
 $folderList = (Get-ChildItem -Path '.\Documents\Powershell Scripts\BackupSandbox\').fullname
+
 #Declare obsolete backups
-$old = Get-date.addDays(-14)
+$old = Get-date.addDays($daysback)
+
+
 #Loop through the directories
 foreach($folder in $folderList){
     #Find Backup in folder
@@ -37,8 +57,7 @@ foreach($folder in $folderList){
     #Add to backup log
     $outputList | Export-Csv -NoTypeInformation -Path '.\Documents\Powershell Scripts\backups.csv' -Delimiter ','  -Append
     #Export backup to share
-    Move-Item -Path $folder\*.bak -Destination $folder\..\..\movefolder\
+    Move-Item -Path $SourceFolder\*.$tailNAME -Destination $DestinationFolder\..\..\movefolder\
 }
 #Delete old backups
-Get-ChildItem -Path $folder\..\..\movefolder\ | Where-Object { !$_.PSIsContainer -and $_.CreationTime -lt $old } | Remove-Item -Force
-
+Get-ChildItem -Path $SourceFolder\..\..\movefolder\ | Where-Object { !$_.PSIsContainer -and $_.CreationTime -lt $old } | Remove-Item -Force
