@@ -1,4 +1,4 @@
-<#﻿    
+<#
     .SYNOPSIS
     Searches a directory for files older than a certain date a deletes the files and folders.
 
