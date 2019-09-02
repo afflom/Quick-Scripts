@@ -15,7 +15,7 @@ function New-TimedStampFileName {
     1{$DateFormat = Get-Date -uformat '%y%m%d%H%M'} # 1703162145 YYMMDDHHmm
     2{$DateFormat = Get-Date -uformat '%Y%m%d'} # 20170316 YYYYMMDD
     3{$DateFormat = Get-Date -uformat '%d%H%M%S'} # 16214855 DDHHmmss
-    4{$DateFormat = Get-Date -uformat '%y/%m/%d_%H:%M'} # 17/03/16_21:52
+    4{$DateFormat = Get-Date -Format o | ForEach-Object -Process {$_ -replace ':', '.'}} # 17/03/16_21:52
     default{'No time format selected'}
   }
 
