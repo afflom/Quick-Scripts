@@ -24,7 +24,7 @@ Function Show-DynamicMenu
   param
   (
     [Parameter(Mandatory=$false)]
-    $ChildItemMode = 'D'
+    [string]$ChildItemMode = 'D'
   )
   
   
@@ -66,5 +66,5 @@ Function Show-DynamicMenu
   $selection = $menu.Item($ans)
   
   # Visual output for Testing
-  Write-host "You selected: "$selection -ForegroundColor Magenta
+  Write-host 'You selected: '$selection -ForegroundColor Magenta
 }
