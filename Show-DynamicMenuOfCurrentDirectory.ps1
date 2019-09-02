@@ -60,11 +60,11 @@ Function Show-DynamicMenu
   do{[int]$ans = Read-Host -Prompt 'Select number'
     if($ans -ge $folderCount )
     {
-      Write-Host ('Select a number {0} or below' -f $folderCount)
+      Write-Host ('Select {0} or below' -f $folderCount)
     }
   } while($ans -notin 0..$folderCount)
   $selection = $menu.Item($ans)
   
   # Visual output for Testing
-  Write-host 'You selected: '$selection -ForegroundColor Magenta
+  Write-host 'You selected:'$selection -ForegroundColor Magenta
 }
